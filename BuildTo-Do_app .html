@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .left-pane, .right-pane {
+            padding: 20px;
+        }
+
+        .left-pane {
+            width: 50%;
+            background-color: #f9f9f9;
+            border-right: 1px solid #ddd;
+        }
+
+        .right-pane {
+            width: 50%;
+            background-color: #fff;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            background-color: #d1ffd1;
+        }
+
+        button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        button.delete {
+            color: red;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-pane">
+            <h2>Task List</h2>
+            <ul id="task-list"></ul>
+        </div>
+
+        <div class="right-pane">
+            <h2>Add a Task</h2>
+            <form id="task-form">
+                <input type="text" id="task-input" placeholder="Enter your task" required>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // When the task form is submitted, add a task to the list
+        document.getElementById('task-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get the task input value
+            const taskInput = document.getElementById('task-input');
+            const taskText = taskInput.value;
+
+            if (taskText === '') {
+                return;
+            }
+
+            // Create a list item for the task
+            const taskItem = document.createElement('li');
+
+            // Create a checkbox to mark the task as complete
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+
+            // Create the delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.innerText = 'X';
+            deleteButton.className = 'delete';
+
+            // Append the checkbox and delete button to the list item
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(document.createTextNode(taskText));
+            taskItem.appendChild(deleteButton);
+
+            // Add the task item to the list
+            document.getElementById('task-list').appendChild(taskItem);
+
+            // Clear the input field
+            taskInput.value = '';
+
+            // Handle task completion by checking/unchecking the checkbox
+            checkbox.addEventListener('change', function() {
+                if (checkbox.checked) {
+                    taskItem.classList.add('completed');
+                } else {
+                    taskItem.classList.remove('completed');
+                }
+            });
+
+            // Handle task deletion
+            deleteButton.addEventListener('click', function() {
+                taskItem.remove();
+            });
+        });
+    </script>
+</body>
+</html>
